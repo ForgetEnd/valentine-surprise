@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💝 给我的玲玲宝宝 | 情人节专属 💝</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+            font-family: 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .envelope {
+            background: #fff5f8;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.3);
+            border: 4px solid #ff69b4;
+            position: relative;
+            text-align: center;
+        }
+        
+        .heart-lock {
+            width: 80px;
+            height: 80px;
+            background: #ff69b4;
+            position: relative;
+            margin: 0 auto 30px;
+            transform: rotate(45deg);
+            animation: pulse 1.5s infinite;
+            cursor: pointer;
+        }
+        
+        .heart-lock:before, .heart-lock:after {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: #ff69b4;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart-lock:before {
+            top: -40px;
+            left: 0;
+        }
+        
+        .heart-lock:after {
+            top: 0;
+            left: -40px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.1); }
+        }
+        
+        .title {
+            color: #ff1493;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .love-letter {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 5px solid #ff69b4;
+            text-align: left;
+            line-height: 1.8;
+            font-size: 1.2em;
+        }
+        
+        .highlight {
+            color: #ff1493;
+            font-weight: bold;
+        }
+        
+        .rose {
+            font-size: 3em;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .secret-box {
+            background: #fff0f5;
+            border: 2px dashed #ff69b4;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .chocolate {
+            display: inline-block;
+            background: #8b4513;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope">
+        <div class="heart-lock" onclick="openLetter()"></div>
+        
+        <h1 class="title">💌 给玲玲的情书 💌</h1>
+        
+        <div class="rose">🌹</div>
+        
+        <div class="love-letter">
+            <p>亲爱的 <span class="highlight">玲玲</span>，</p>
+            <br>
+            <p>遇见你之前，情人节只是日历上的一个日期。</p>
+            <p>遇见你之后，每一天都像是情人节。</p>
+            <br>
+            <p>虽然不能送你真正的🌹玫瑰和🍫巧克力，</p>
+            <p>但我想送你这些数字化的甜蜜：</p>
+            <br>
+            <div style="text-align: center;">
+                <span class="chocolate">无限量的拥抱</span>
+                <span class="chocolate">随时随地的想念</span>
+                <span class="chocolate">永不过期的爱</span>
+            </div>
+            <br>
+            <p>愿我成为你生命中那个——</p>
+            <p>一想起来就会微笑的人。</p>
+        </div>
+        
+        <div id="secret" class="secret-box">
+            <p style="color: #ff1493; font-weight: bold;">
+                🔐 解锁成功！<br><br>
+                我的情人节承诺：<br>
+                <span class="highlight">往后每一个情人节，都有我在你身边。</span><br><br>
+                💖 我爱你，不只今天，而是每一天。 💖
+            </p>
+        </div>
+        
+        <div style="margin-top: 30px; color: #ff69b4; font-style: italic;">
+            <p>—— 永远属于你的 <span class="highlight">宝宝</span></p>
+            <p style="font-size: 0.9em;">2026年情人节</p>
+        </div>
+        
+        <div style="margin-top: 20px; font-size: 0.8em; color: #999;">
+            专属情书 · 仅此一份 · 点击心形解锁更多甜蜜
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const secret = document.getElementById('secret');
+            const isHidden = secret.style.display === 'none' || secret.style.display === '';
+            
+            if (isHidden) {
+                secret.style.display = 'block';
+                
+                // 创建飘落的心形
+                for(let i = 0; i < 20; i++) {
+                    createHeart();
+                }
+                
+                // 改变心形锁颜色
+                document.querySelector('.heart-lock').style.background = '#ff1493';
+            }
+        }
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💖';
+            heart.style.position = 'absolute';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.color = '#ff69b4';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = '-30px';
+            heart.style.opacity = 0.7;
+            heart.style.animation = `fall ${Math.random() * 3 + 2}s linear`;
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to { transform: translateY(100vh); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
