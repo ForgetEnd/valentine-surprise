@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💘 玲玲专属爱情小测试 💘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #ffafcc, #ffc8dd);
+            font-family: 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            color: #590d22;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+            border: 3px solid #ff4d8d;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title {
+            color: #ff006e;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #ff4d8d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        .heart-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff006e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+        
+        /* 测试区域 */
+        .question-box {
+            background: #fff0f6;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            border-left: 5px solid #ff4d8d;
+            display: none;
+        }
+        
+        .question-box.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            font-size: 1.5em;
+            color: #ff006e;
+            margin-bottom: 20px;
+        }
+        
+        /* 选项样式 */
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        @media (min-width: 600px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #ffb3c6;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            text-align: left;
+        }
+        
+        .option:hover {
+            background: #fff0f6;
+            border-color: #ff4d8d;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 77, 141, 0.2);
+        }
+        
+        .option.selected {
+            background: #ff4d8d;
+            color: white;
+            border-color: #ff006e;
+        }
+        
+        /* 按钮 */
+        .btn {
+            background: linear-gradient(45deg, #ff006e, #ff4d8d);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 0, 110, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* 结果页面 */
+        .result-page {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+        
+        .result-title {
+            color: #ff006e;
+            font-size: 2.5em;
+            margin: 20px 0;
+        }
+        
+        .result-score {
+            font-size: 4em;
+            color: #ff006e;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .result-message {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin: 30px 0;
+            padding: 25px;
+            background: #fff0f6;
+            border-radius: 20px;
+        }
+        
+        .love-certificate {
+            background: linear-gradient(45deg, #fff, #fff0f6);
+            border: 3px solid #ff4d8d;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px auto;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .certificate-title {
+            color: #ff006e;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .couple-photo {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #ffafcc, #ffc8dd);
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            height: 8px;
+            background: #ffb3c6;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #ff4d8d);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #ff4d8d;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="header">
+            <div class="heart-counter">💖 得分: <span id="score">0</span>/100</div>
+            <h1 class="title">💝 玲玲专属爱情小测试 💝</h1>
+            <p class="subtitle">测测你对"我们"的了解有多少～</p>
+            
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="progress-text">进度: <span id="progress-text">0</span>/5</div>
+        </div>
+        
+        <!-- 开始页面 -->
+        <div id="start-page" style="text-align: center;">
+            <div class="couple-photo">
+                💑
+            </div>
+            <h2 style="color: #ff006e; margin: 20px 0;">欢迎参加我们的爱情测试！</h2>
+            <p style="font-size: 1.2em; margin-bottom: 30px; line-height: 1.6;">
+                这里有5个关于"我们"的小问题<br>
+                看看你能得多少分？<br>
+                <span style="color: #ff4d8d;">满分100分，80分以上有惊喜奖励哦！</span>
+            </p>
+            <button class="btn" onclick="startTest()">开始测试 💘</button>
+        </div>
+        
+        <!-- 问题1 -->
+        <div class="question-box" id="q1">
+            <h2 class="question">1. 我们第一次见面是什么时候？</h2>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 1, 20)">A. 2025年初春，微风正好</div>
+                <div class="option" onclick="selectOption(this, 1, 20)">B. 2025年夏天，阳光灿烂</div>
+                <div class="option" onclick="selectOption(this, 1, 20)">C. 2025年秋天，落叶纷飞</div>
+                <div class="option" onclick="selectOption(this, 1, 20)">D. 2025年冬天，雪花飘落</div>
+            </div>
+        </div>
+        
+        <!-- 问题2 -->
+        <div class="question-box" id="q2">
+            <h2 class="question">2. 你最喜欢我哪种表达爱的方式？</h2>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 2, 20)">A. 清晨的早安和睡前的晚安</div>
+                <div class="option" onclick="selectOption(this, 2, 20)">B. 记住你说的每件小事</div>
+                <div class="option" onclick="selectOption(this, 2, 20)">C. 为你准备的小惊喜</div>
+                <div class="option" onclick="selectOption(this, 2, 20)">D. 安静的陪伴和倾听</div>
+            </div>
+        </div>
+        
+        <!-- 问题3 -->
+        <div class="question-box" id="q3">
+            <h2 class="question">3. 未来我最想和你一起做的事？</h2>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 3, 20)">A. 环游世界，看遍风景</div>
+                <div class="option" onclick="selectOption(this, 2, 20)">B. 养一只属于我们的宠物</div>
+                <div class="option" onclick="selectOption(this, 3, 20)">C. 一起做饭，分享三餐四季</div>
+                <div class="option" onclick="selectOption(this, 3, 20)">D. 每个节日都为你准备惊喜</div>
+            </div>
+        </div>
+        
+        <!-- 问题4 -->
+        <div class="question-box" id="q4">
+            <h2 class="question">4. 你觉得我最吸引你的特质是什么？</h2>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 4, 20)">A. 真诚和专一</div>
+                <div class="option" onclick="selectOption(this, 4, 20)">B. 温柔和细心</div>
+                <div class="option" onclick="selectOption(this, 4, 20)">C. 幽默和有趣</div>
+                <div class="option" onclick="selectOption(this, 4, 20)">D. 责任感和担当</div>
+            </div>
+        </div>
+        
+        <!-- 问题5 -->
+        <div class="question-box" id="q5">
+            <h2 class="question">5. 你希望我们的爱情像什么？</h2>
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 5, 20)">A. 细水长流的陪伴</div>
+                <div class="option" onclick="selectOption(this, 5, 20)">B. 热烈绽放的玫瑰</div>
+                <div class="option" onclick="selectOption(this, 5, 20)">C. 温暖明亮的阳光</div>
+                <div class="option" onclick="selectOption(this, 5, 20)">D. 甜蜜浓郁的巧克力</div>
+            </div>
+        </div>
+        
+        <!-- 导航按钮 -->
+        <div id="nav-buttons" style="display: none; text-align: center;">
+            <button class="btn" id="prev-btn" onclick="prevQuestion()" disabled>上一题</button>
+            <button class="btn" id="next-btn" onclick="nextQuestion()">下一题</button>
+            <button class="btn" id="submit-btn" onclick="showResult()" style="display: none;">查看结果 💝</button>
+        </div>
+        
+        <!-- 结果页面 -->
+        <div class="result-page" id="result-page">
+            <div class="result-title">🎉 测试完成！ 🎉</div>
+            <div class="result-score" id="final-score">0</div>
+            
+            <div class="result-message" id="result-message">
+                <!-- 结果信息会动态生成 -->
+            </div>
+            
+            <div class="love-certificate">
+                <div class="certificate-title">💖 爱情证书 💖</div>
+                <div class="couple-photo">
+                    🏆
+                </div>
+                <p style="font-size: 1.2em; margin: 20px 0;">
+                    特此证明：<br>
+                    <span style="color: #ff006e; font-weight: bold;">玲玲</span><br>
+                    成功完成爱情测试<br>
+                    得分：<span id="certificate-score" style="color: #ff006e;">0</span>分
+                </p>
+                <p style="color: #666; font-size: 0.9em;">
+                    发证日期：2025年情人节<br>
+                    发证人：永远爱你的宝宝
+                </p>
+            </div>
+            
+            <button class="btn" onclick="shareResult()">分享甜蜜 💌</button>
+            <button class="btn" onclick="restartTest()" style="background: linear-gradient(45deg, #36d1dc, #5b86e5);">重新测试 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let totalQuestions = 5;
+        let score = 0;
+        let userAnswers = new Array(totalQuestions).fill(null);
+        
+        function startTest() {
+            document.getElementById('start-page').style.display = 'none';
+            document.getElementById('nav-buttons').style.display = 'block';
+            showQuestion(1);
+            updateProgress();
+        }
+        
+        function showQuestion(qNum) {
+            // 隐藏所有问题
+            for(let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('q' + i).classList.remove('active');
+            }
+            
+            // 显示当前问题
+            document.getElementById('q' + qNum).classList.add('active');
+            currentQuestion = qNum;
+            
+            // 更新按钮状态
+            document.getElementById('prev-btn').disabled = qNum === 1;
+            document.getElementById('next-btn').style.display = qNum < totalQuestions ? 'block' : 'none';
+            document.getElementById('submit-btn').style.display = qNum === totalQuestions ? 'block' : 'none';
+            
+            // 恢复之前的选择
+            if(userAnswers[qNum-1]) {
+                const options = document.querySelectorAll('#q' + qNum + ' .option');
+                options.forEach(opt => {
+                    if(opt.classList.contains('selected')) {
+                        opt.classList.remove('selected');
+                    }
+                });
+                // 这里可以恢复之前的选择，需要记录具体选了哪个
+            }
+        }
+        
+        function selectOption(element, qNum, points) {
+            // 移除同一问题的其他选择
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // 标记当前选择
+            element.classList.add('selected');
+            
+            // 记录答案和得分
+            userAnswers[qNum-1] = points;
+            
+            // 更新总分
+            score = userAnswers.reduce((sum, val) => sum + (val || 0), 0);
+            document.getElementById('score').textContent = score;
+            
+            // 自动进入下一题（可选）
+            if(currentQuestion < totalQuestions) {
+                setTimeout(() => nextQuestion(), 500);
+            }
+        }
+        
+        function nextQuestion() {
+            if(currentQuestion < totalQuestions) {
+                showQuestion(currentQuestion + 1);
+                updateProgress();
+            }
+        }
+        
+        function prevQuestion() {
+            if(currentQuestion > 1) {
+                showQuestion(currentQuestion - 1);
+                updateProgress();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = currentQuestion;
+        }
+        
+        function showResult() {
+            // 隐藏问题区域
+            for(let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('q' + i).style.display = 'none';
+            }
+            document.getElementById('nav-buttons').style.display = 'none';
+            
+            // 显示结果
+            document.getElementById('result-page').style.display = 'block';
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('certificate-score').textContent = score;
+            
+            // 根据分数显示不同评价
+            let message = '';
+            if(score >= 90) {
+                message = '💖 满分恋人！你对"我们"的了解简直完美！你就是我的灵魂伴侣，每一个细节都记得清清楚楚。这份默契，值得我们珍藏一生！';
+            } else if(score >= 70) {
+                message = '🎯 优秀情侣！你对我们的感情非常了解，大多数问题都答对了。继续保持这份用心，我们的爱情会越来越甜蜜！';
+            } else if(score >= 50) {
+                message = '💕 甜蜜伴侣！你对"我们"有不错的了解，但还有一些小细节可以更用心哦。不过没关系，未来的日子还长，我们可以一起创造更多回忆！';
+            } else {
+                message = '🌱 萌芽之爱！看来我们还需要更多时间去了解彼此呢。不过这正是爱情的美妙之处——每一天都能发现对方的新魅力！';
+            }
+            
+            document.getElementById('result-message').innerHTML = message;
+            
+            // 添加庆祝效果
+            if(score >= 80) {
+                createCelebration();
+            }
+        }
+        
+        function createCelebration() {
+            for(let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💖';
+                    heart.style.position = 'fixed';
+                    heart.style.fontSize = Math.random() * 25 + 15 + 'px';
+                    heart.style.color = '#ff006e';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-50px';
+                    heart.style.zIndex = '9999';
+                    heart.style.animation = `fall ${Math.random() * 2 + 1}s linear forwards`;
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+            
+            // 添加CSS动画
+            if(!document.getElementById('celebration-style')) {
+                const style = document.createElement('style');
+                style.id = 'celebration-style';
+                style.textContent = `
+                    @keyframes fall {
+                        to { transform: translateY(100vh) rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function shareResult() {
+            const text = `我在情人节爱情测试中得了${score}分！💝\n我们的爱情甜度爆表！\n快来测试你对TA的了解有多少吧～`;
+            alert('复制以下文字分享给TA：\n\n' + text + '\n\n（提示：你可以直接复制这段文字）');
+        }
+        
+        function restartTest() {
+            // 重置所有状态
+            currentQuestion = 0;
+            score = 0;
+            userAnswers.fill(null);
+            
+            // 重置显示
+            document.getElementById('score').textContent = '0';
+            document.getElementById('progress').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0';
+            document.getElementById('result-page').style.display = 'none';
+            document.getElementById('start-page').style.display = 'block';
+            document.getElementById('nav-buttons').style.display = 'none';
+            
+            // 重置所有选项
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // 显示所有问题框
+            for(let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('q' + i).style.display = 'block';
+                document.getElementById('q' + i).classList.remove('active');
+            }
+        }
+        
+        // 初始化
+        window.onload = function() {
+            // 可以在这里添加初始化代码
+        };
+    </script>
+</body>
+</html>
